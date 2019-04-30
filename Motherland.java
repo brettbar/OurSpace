@@ -8,23 +8,30 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 
 public class Motherland extends JFrame {
     private ArrayList<Comrade> proletariat;
+    private final String PASSWORD;
 
     private JButton checkUser;
     private JButton checkStatus;
-    private JButton dijsktra;
-    private JButton login;
+    private JButton dijkstra;
+    private JButton purge;
 
     private JPanel buttons;
     private JPanel imagePanel;
     private JLabel label;
 
     public Motherland() {
-        setTitle("OurSpace, the proletariate's social network");
-        setSize(650, 400);
+        PASSWORD = "potatoturnip";
+        setTitle("OurSpace, the proletariat's social network");
+        setSize(500, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        getContentPane().setBackground(Color.RED);
+
         setLayout(new BorderLayout());
 
         doButtons();
@@ -40,21 +47,22 @@ public class Motherland extends JFrame {
 
     private void doButtons() {
         checkUser = new JButton("Check for Comrade");
-        checkStatus = new JButton("Status");
-        dijsktra = new JButton("Comrade Dijkstra");
-        login = new JButton("Commissar");
+        checkStatus = new JButton("           Status             ");
+        dijkstra = new JButton(" Comrade Dijkstra  ");
+        purge = new JButton("      Stalin Purge       ");
 
         checkUser.addActionListener(new ButtonListener());
         checkStatus.addActionListener(new ButtonListener());
-        dijsktra.addActionListener(new ButtonListener());
-        login.addActionListener(new ButtonListener());
+        dijkstra.addActionListener(new ButtonListener());
+        purge.addActionListener(new ButtonListener());
 
         buttons = new JPanel();
         buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
         buttons.add(checkUser);
         buttons.add(checkStatus);
-        buttons.add(dijsktra);
-        buttons.add(login);
+        buttons.add(dijkstra);
+        buttons.add(purge);
+        buttons.setBackground(Color.RED);
     }
 
     private void doImage() {
@@ -64,31 +72,38 @@ public class Motherland extends JFrame {
         ImageIcon yourBoi = new ImageIcon("YourBoi.jpg");
         label.setIcon(yourBoi);
         imagePanel.add(label);
+        imagePanel.setBackground(Color.RED);
+
     }
 
     private void lazer() {
         ImageIcon YourBoiL = new ImageIcon("YourBoiLazer.jpeg");
         label.setIcon(YourBoiL);
         //add(label);
-        System.out.println("Photo");
+        System.out.println("Photo Change");
     }
     private class ButtonListener implements ActionListener { 
         public void actionPerformed (ActionEvent e) {
             String command = e.getActionCommand();
 
-            if (command.equals("checkUser"));
+            if (e.getSource() == checkUser);
                 //check if user exists
 
-            if (command.equals("checkStatus"));
+            if (e.getSource() == checkStatus);
                 //check camraderie of two comrades
 
-            if (command.equals("dijkstra"));
+            if (e.getSource() == dijkstra);
                 //execute dijkstra algorithm 
             
-            if (e.getSource() == login) {
-                lazer();
+            if (e.getSource() == purge) {
+                String password;
+                password = JOptionPane.showInputDialog("Enter the password, comrade commissar");
+                if (password.equals(PASSWORD)) {
+                    lazer();
+                }
+                else 
+                    JOptionPane.showMessageDialog(null, "Nice try, capitalist swine");
             }
-                //login as commissar
 
 
         }
@@ -99,40 +114,14 @@ public class Motherland extends JFrame {
         new Motherland();
     }
 
-    public static void readAndPopulate(String filename) throws Exception
-    {
-        // try 
-        // {
-        //     BufferedReader reader = new BufferedReader(new FileReader(filename));
-            
-        // }
-        // catch (Exception e) 
-        // {
-        //     System.err.format("Exception occurred trying to read '%s'.", filename);
-        //     e.printStackTrace();
-        // }
-        File file = new File(filename);
-        Scanner filein = new Scanner(file);
+    public static void readAndPopulate(String filename) throws Exception {
 
-        String name = "";
-        int age = 0;
-        String occupation = "";
-        String city = "";
-        int partyLoyalty = 0;
-        ArrayList<Connection> comrades = new ArrayList<Connection>();
-
-        while(filein.hasNext())
-        {
-            String line = filein.nextLine();
-
-            if (line.charAt(0) == '{')
-            {
-                // start friend list
-            }
-            else if (line.charAt(0) == '}')
-            {   
-                // end friend list
-            }
-        }
     }
+    
+    /*public static void playSound() throws Exception {
+        String bip = "C:\\Users\\Andrew\\Documents\\CPSC450\\OurSpace\\homeRunSound.mp3";
+        Media hit = new Media(new File(bip).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(hit);
+        mediaPlayer.play();
+    }*/
 }
