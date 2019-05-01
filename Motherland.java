@@ -41,6 +41,7 @@ public class Motherland {
 
             int[][] adjMatrix = builtAdjMatrix();
             printMatrix(adjMatrix);
+            comradeDijkstra(adjMatrix, 0);
             
         }
         catch (Exception e) {
@@ -145,7 +146,7 @@ public class Motherland {
                         adjMatrix[i][j] = currComrade.getComrades().get(currComrade.getJustComrades().indexOf(comradeBeingChecked)).getCamraderie();
                     } else {
                         adjMatrix[i][j] = 0;
-                    }                                     
+                    }                                      
                 }
             }
         }
@@ -163,6 +164,59 @@ public class Motherland {
             }
             System.out.println();
         }
+    }
+
+    private static void comradeDijkstra(int[][] graph, int source) {
+        int distArr[] = new int[5];  
+   
+        Boolean sptSet[] = new Boolean[5]; 
+  
+        for (int i = 0; i < 5; i++) { 
+            distArr[i] = Integer.MAX_VALUE; 
+            sptSet[i] = false; 
+        } 
+  
+        distArr[source] = 0; 
+  
+        for (int i = 0; i < 4; i++) { 
+
+            int u = minDistance(distArr, sptSet); 
+  
+            sptSet[u] = true; 
+  
+            //v for vertex
+            for (int v = 0; v < 5; v++) 
+  
+                if (!sptSet[v] && graph[u][v]!=0 && 
+                        distArr[u] != Integer.MAX_VALUE && distArr[u]+graph[u][v] < distArr[v]) {
+                    distArr[v] = distArr[u] + graph[u][v]; 
+                }
+        } 
+  
+        printSolution(distArr, 5); 
+    }
+    
+    public static void printSolution(int distArr[], int n) { 
+        System.out.println("Ivan Ivanov as source:");
+        String[] names = {"Ivan Ivanov", "Andre Pochinkov", "Vitas Kushikov", "Ana Petroliokov", "Misha Krivoruchko"};
+        
+        System.out.println("Comrade   Distance"); 
+        for (int i = 0; i < 5; i++) 
+            System.out.println(names[i] +" ---> "+ distArr[i]); 
+    } 
+    
+    public static int minDistance(int distArr[], Boolean set[]) { 
+        // Initialize min value 
+        int min = Integer.MAX_VALUE, minIndex=-1; 
+  
+        for (int i = 0; i < 5; i++) 
+            if (set[i] == false && distArr[i] <= min) 
+{ 
+                min = distArr[i]; 
+                minIndex = i; 
+            } 
+  
+        return minIndex; 
     }
 
         
