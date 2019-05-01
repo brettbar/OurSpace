@@ -41,7 +41,7 @@ public class Motherland {
 
             int[][] adjMatrix = builtAdjMatrix();
             printMatrix(adjMatrix);
-            comradeDijkstra(adjMatrix, 0, 1);
+            comradeDijkstra(adjMatrix, 1, 0);
             
         }
         catch (Exception e) {
@@ -192,34 +192,49 @@ public class Motherland {
                 } 
             } 
         } 
-        printSolution(source, shortestDistances, parents); 
-        
-    }
+        // unmade ^
 
-    // unmade
-    // Ivan Ivanov as source 
-    // Ivan Ivanov --> Sasha Sokolov --> Andre Pochinkov
-    private static void printSolution(int startVertex, int[] distances, int[] parents) { 
-        int nVertices = distances.length; 
-        System.out.print("Vertex\t Distance\tPath"); 
-          
-        for (int vertexIndex = 0; vertexIndex < nVertices; vertexIndex++) { 
-            if (vertexIndex != startVertex) { 
-                System.out.print("\n" + startVertex + " -> "); 
-                System.out.print(vertexIndex + " \t\t "); 
-                System.out.print(distances[vertexIndex] + "\t\t"); 
-                printPath(vertexIndex, parents); 
+        System.out.print("Source \t -> \t Destination \t Weight\t Chain"); 
+         
+        if (source < destination) {
+            for (int i = source; i <= destination;  i++) { 
+                if (i != source && i == destination) { 
+                    System.out.print("\n" + proletariat.get(source).getName() + " -> "); 
+                    System.out.print(proletariat.get(i).getName() + " \t "); 
+                    System.out.print(shortestDistances[i] + "\t"); 
+                    if (i == NO_PARENT) { 
+                        break; 
+                    } 
+                    printPath(parents[i], parents); 
+                    System.out.print(proletariat.get(i).getName() + " "); 
+                } 
             } 
-        } 
-    } 
+        }
+        else {
+            for (int i = source; i >= destination;  i--) { 
+                if (i != source && i == destination) { 
+                    System.out.print("\n" + proletariat.get(source).getName() + " -> "); 
+                    System.out.print(proletariat.get(i).getName() + " \t "); 
+                    System.out.print(shortestDistances[i] + "\t"); 
+                    if (i == NO_PARENT) { 
+                        break; 
+                    } 
+                    printPath(parents[i], parents); 
+                    System.out.print(proletariat.get(i).getName() + " "); 
+                } 
+            } 
+        }
+    }
     
     // unmade
+    // it'll be a pain to change this, since it's recursive
     private static void printPath(int currentVertex, int[] parents) { 
         if (currentVertex == NO_PARENT) { 
             return; 
         } 
         printPath(parents[currentVertex], parents); 
-        System.out.print(currentVertex + " "); 
+        System.out.print(proletariat.get(currentVertex).getName() + " --> ");
+
     } 
 
     public static void printMatrix(int[][] matrix) {
