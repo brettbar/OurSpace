@@ -19,7 +19,11 @@ public class Motherland {
     private static ArrayList<Comrade> proletariat;
 
     public static void main(String[] args) {
-        
+        new Motherland().run();
+    }
+
+
+    public void run() {
         try {
             File file = new File("Proletariat");
             readAndPopulateProles(file);
