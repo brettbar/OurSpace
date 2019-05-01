@@ -4,8 +4,12 @@ import java.util.Scanner;
 import java.io.*;
 import java.lang.*;
 import javax.swing.*;
+
+//import jdk.nashorn.internal.scripts.JO;
+
 import java.awt.*;
 import java.awt.event.*;
+
 
 // import javafx.scene.media.Media;
 // import javafx.scene.media.MediaPlayer;
@@ -19,15 +23,20 @@ public class Kremlin extends JFrame {
     private JButton dijkstra;
     private JButton purge;
 
+    private JPanel logoPanel;
     private JPanel buttons;
     private JPanel stalinPanel;
+    private JPanel textPanel;
     private JLabel label;
-
-    private JPanel logoPanel;
     private JLabel logoLabel;
+
+    private JTextField out;
+    
+    private Motherland rodinu = new Motherland();
 
 
     public Kremlin() {
+        rodinu = new Motherland();
         PASSWORD = "potatoturnip";
         setTitle("OurSpace, the proletariat's social network");
         setSize(1150, 600);
@@ -39,16 +48,22 @@ public class Kremlin extends JFrame {
 
         doButtons();
         stalinImage();
-        //pack();
-
         logoImage();
+        doTextField();
         
         add(buttons, BorderLayout.EAST);    
         add(stalinPanel, BorderLayout.WEST);
         add(logoPanel, BorderLayout.SOUTH);
+        add(textPanel, BorderLayout.CENTER);
 
         setVisible(true);
 
+    }
+
+    private void doTextField() {
+        textPanel = new JPanel();
+        out = new JTextField("Output here");
+        textPanel.add(out);
     }
 
     private void doButtons() {
@@ -95,28 +110,54 @@ public class Kremlin extends JFrame {
     private void lazer() {
         ImageIcon YourBoiL = new ImageIcon("YourBoiLazer.jpeg");
         label.setIcon(YourBoiL);
-        //add(label);
+        System.out.println("Photo Change");
+    }
+
+    private synchronized void urBoi()  {
+        try{
+            wait(500000);
+        }
+        catch (Exception e) {
+            System.out.println("You're dumb");
+        }
+        ImageIcon YourBoi = new ImageIcon("YourBoi.jpg");
+        label.setIcon(YourBoi);
         System.out.println("Photo Change");
     }
 
     private class ButtonListener implements ActionListener { 
         public void actionPerformed (ActionEvent e) {
-            String command = e.getActionCommand();
 
-            if (e.getSource() == checkUser);
+            if (e.getSource() == checkUser) {
+                String comrade = JOptionPane.showInputDialog("Enter the comrade");
+                if (rodinu.doesComradeExist(comrade))
+                    JOptionPane.showMessageDialog(null, comrade + " exists");
+                else
+                    JOptionPane.showMessageDialog(null, comrade + " does not exist");
+            }
                 //check if user exists
 
             if (e.getSource() == checkStatus);
                 //check camraderie of two comrades
 
-            if (e.getSource() == dijkstra);
-                //execute dijkstra algorithm 
+            if (e.getSource() == dijkstra){ 
+                String source = JOptionPane.showInputDialog("Enter the starting comrade");
+                String dest = JOptionPane.showInputDialog("Enter the ending comrade");
+
+                rodinu.printMap();
+                rodinu.runDijkstra(source,dest);
+            }
+                
             
             if (e.getSource() == purge) {
                 String password;
                 password = JOptionPane.showInputDialog("Enter the password, comrade commissar");
                 if (password.equals(PASSWORD)) {
+                    String input = JOptionPane.showInputDialog("Enter a loyalty to purge with");
+                    int loy = Integer.parseInt(input);
                     lazer();
+                    //urBoi();
+                    
                 }
                 else 
                     JOptionPane.showMessageDialog(null, "Nice try, capitalist swine");
@@ -129,18 +170,7 @@ public class Kremlin extends JFrame {
     public static void main(String[] args)
     {
         new Kremlin();
-        Motherland rodinu = new Motherland();
-        rodinu.run();
     }
 
-    public static void readAndPopulate(String filename) throws Exception {
 
-    }
-    
-    /*public static void playSound() throws Exception {
-        String bip = "C:\\Users\\Andrew\\Documents\\CPSC450\\OurSpace\\homeRunSound.mp3";
-        Media hit = new Media(new File(bip).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(hit);
-        mediaPlayer.play();
-    }*/
 }

@@ -18,20 +18,26 @@ import java.lang.*;
 public class Motherland {
     private static ArrayList<Comrade> proletariat;
 
-    public static void main(String[] args) {
-        new Motherland().run();
+    Motherland() {
+        try {
+        File file = new File("Proletariat");
+        readAndPopulateProles(file);
+        readAndAddConnections(file);
+        }
+
+        catch (Exception e) {
+            System.err.format("Exception occurred trying to read '%s'.", "Proletariat");
+            e.printStackTrace();
+        }
     }
-
-
-    public void run() {
+    // Should not be run this is only for testing purposes. To run the actual program
+    // use Kremlin.java as the executable class
+    public static void main(String[] args) {
         try {
             File file = new File("Proletariat");
             readAndPopulateProles(file);
             readAndAddConnections(file);
             System.out.println();
-            // for (int i = 0; i < proletariat.size(); i++) {
-            //     System.out.println(proletariat.get(i).getName());
-            // }
 
             for (int j = 0; j < proletariat.size(); j++) {
                 Comrade testComrade = proletariat.get(j);
@@ -46,13 +52,96 @@ public class Motherland {
             int[][] adjMatrix = builtAdjMatrix();
             printMatrix(adjMatrix);
             comradeDijkstra(adjMatrix, 1, 0);
+            System.out.println();
+            System.out.println();
+            System.out.println("Ivan's Friends");
+            for (int i = 0; i < proletariat.get(0).getComrades().size(); i++) {
+                System.out.println(proletariat.get(0).getComrades().get(i).getComrade().getName());
+            }
+
+            // purgeDisloyalComrade(proletariat.get(2));
+            // System.out.println();
+
+            // System.out.println("Ivan's Friends, sasha never existed");
+            // for (int i = 0; i < proletariat.get(0).getComrades().size(); i++) {
+            //     System.out.println(proletariat.get(0).getComrades().get(i).getComrade().getName());
+            // }
+
+
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            for (int j = 0; j < proletariat.size(); j++) {
+                Comrade testComrade = proletariat.get(j);
+                System.out.println("Test Comrade " + testComrade.getName());
+                for (int i = 0; i < testComrade.getComrades().size(); i++) {
+                    System.out.println(testComrade.getName() +"'s Comrade: " + testComrade.getComrades().get(i).getComrade().getName() + " " + testComrade.getComrades().get(i).getCamraderie());
+                }
+                System.out.println();
+            }
+
+            greatPurge(5);
+            System.out.println();
+            for (int j = 0; j < proletariat.size(); j++) {
+                Comrade testComrade = proletariat.get(j);
+                System.out.println("Test Comrade " + testComrade.getName());
+                for (int i = 0; i < testComrade.getComrades().size(); i++) {
+                    System.out.println(testComrade.getName() +"'s Comrade: " + testComrade.getComrades().get(i).getComrade().getName() + " " + testComrade.getComrades().get(i).getCamraderie());
+                }
+                System.out.println();
+            }
+
+            
+
             
         }
         catch (Exception e) {
             System.err.format("Exception occurred trying to read '%s'.", "Proletariat");
             e.printStackTrace();
         }
+    }
+    
+    public boolean doesComradeExist(String comrade) {
+        for (int i = 0; i< proletariat.size(); i++) {
+            if (proletariat.get(i).getName().equals(comrade))
+                return true;
+        }
+        return false;
+    }
 
+    public void runDijkstra(String s, String d) {
+            int[][] adjMatrix = builtAdjMatrix();
+            printMatrix(adjMatrix);
+            int source = -1;
+            int dest = -1;
+
+            for (int i = 0; i< proletariat.size(); i++) {
+                if (proletariat.get(i).getName().equals(s))
+                    source = i;
+            }
+
+            for (int i = 0; i< proletariat.size(); i++) {
+                if (proletariat.get(i).getName().equals(d))
+                    dest = i;
+            }
+
+            if (source == -1 || dest == -1)
+                System.out.println("Nonexistant comrades");
+
+            comradeDijkstra(adjMatrix, source, dest);
+    }
+
+    public void printMap() {
+        System.out.println();
+        for (int j = 0; j < proletariat.size(); j++) {
+            Comrade testComrade = proletariat.get(j);
+
+            System.out.println("Test Comrade " + testComrade.getName());
+            for (int i = 0; i < testComrade.getComrades().size(); i++) {
+                System.out.println(testComrade.getName() +"'s Comrade: " + testComrade.getComrades().get(i).getComrade().getName() + " " + testComrade.getComrades().get(i).getCamraderie());
+            }
+            System.out.println();
+        }
     }
 
     public static void readAndPopulateProles(File file) throws Exception {
@@ -250,6 +339,26 @@ public class Motherland {
         }
     }
 
+    public static void greatPurge(int minLoyalty) {
+        for (int i = 0; i < proletariat.size(); i++) {
+            if (proletariat.get(i).getPartyLoyalty() < minLoyalty) {
+                Comrade traitor = proletariat.get(i);
+                eraseTraitorFromFriends(traitor);
+                proletariat.remove(traitor);
+            }
+        }
+    }
+    
+    public static void eraseTraitorFromFriends(Comrade traitor) {
+        for (int i = 0; i < proletariat.size(); i++) { // for each prole
+            Comrade currentComrade = proletariat.get(i);
+            for (int j = 0; j < currentComrade.getComrades().size(); j++) {
+                if (currentComrade.getComrades().get(j).getComrade() == traitor) {
+                    proletariat.get(i).getComrades().remove(currentComrade.getComrades().get(j));
+                }
+            }
+        }
+    }
 
         
 }
