@@ -41,7 +41,7 @@ public class Motherland {
 
             int[][] adjMatrix = builtAdjMatrix();
             printMatrix(adjMatrix);
-            comradeDijkstra(adjMatrix, 0);
+            comradeDijkstra(adjMatrix, 0, 1);
             
         }
         catch (Exception e) {
@@ -143,7 +143,7 @@ public class Motherland {
                     // if the comrade being checked (the jth) is
                     // being followed by the comrade (the ith)
                     if (currComrade.getJustComrades().contains(comradeBeingChecked)) {
-                        adjMatrix[i][j] = currComrade.getComrades().get(currComrade.getJustComrades().indexOf(comradeBeingChecked)).getCamraderie();
+                        adjMatrix[i][j] = currComrade.getComrades().get(currComrade.getJustComrades().indexOf(comradeBeingChecked)).getCamraderie(); // im sorry but it works
                     } else {
                         adjMatrix[i][j] = 0;
                     }                                      
@@ -153,10 +153,75 @@ public class Motherland {
         return adjMatrix;
     }
 
-    // shamelessly stolen from here:
-    // https://stackoverflow.com/questions/5061912/printing-out-a-2-d-array-in-matrix-format/5061920
-    // but its only used for printing in the testing phase, and this isn't really be graded
-    // so it seems fair game to use
+    // unmade
+    final static int NO_PARENT = -1;
+    private static void comradeDijkstra(int[][] graph, int source, int destination) {
+        int nVertices = graph[0].length; 
+        int[] shortestDistances = new int[nVertices]; 
+        boolean[] added = new boolean[nVertices]; 
+  
+        for (int vertexIndex = 0; vertexIndex < nVertices; vertexIndex++) { 
+            shortestDistances[vertexIndex] = Integer.MAX_VALUE; 
+            added[vertexIndex] = false; 
+        } 
+          
+        shortestDistances[source] = 0; 
+  
+        int[] parents = new int[nVertices]; 
+
+        parents[source] = NO_PARENT; 
+  
+        for (int i = 1; i < nVertices; i++) { 
+            int nearestVertex = -1; 
+            int shortestDistance = Integer.MAX_VALUE; 
+            for (int vertexIndex = 0; vertexIndex < nVertices; vertexIndex++) { 
+                if (!added[vertexIndex] && shortestDistances[vertexIndex] < shortestDistance) { 
+                    nearestVertex = vertexIndex; 
+                    shortestDistance = shortestDistances[vertexIndex]; 
+                } 
+            } 
+  
+            added[nearestVertex] = true; 
+
+            for (int vertexIndex = 0; vertexIndex < nVertices; vertexIndex++) { 
+                int edgeDistance = graph[nearestVertex][vertexIndex]; 
+                  
+                if (edgeDistance > 0 && ((shortestDistance + edgeDistance) < shortestDistances[vertexIndex])) { 
+                    parents[vertexIndex] = nearestVertex; 
+                    shortestDistances[vertexIndex] = shortestDistance + edgeDistance; 
+                } 
+            } 
+        } 
+        printSolution(source, shortestDistances, parents); 
+        
+    }
+
+    // unmade
+    // Ivan Ivanov as source 
+    // Ivan Ivanov --> Sasha Sokolov --> Andre Pochinkov
+    private static void printSolution(int startVertex, int[] distances, int[] parents) { 
+        int nVertices = distances.length; 
+        System.out.print("Vertex\t Distance\tPath"); 
+          
+        for (int vertexIndex = 0; vertexIndex < nVertices; vertexIndex++) { 
+            if (vertexIndex != startVertex) { 
+                System.out.print("\n" + startVertex + " -> "); 
+                System.out.print(vertexIndex + " \t\t "); 
+                System.out.print(distances[vertexIndex] + "\t\t"); 
+                printPath(vertexIndex, parents); 
+            } 
+        } 
+    } 
+    
+    // unmade
+    private static void printPath(int currentVertex, int[] parents) { 
+        if (currentVertex == NO_PARENT) { 
+            return; 
+        } 
+        printPath(parents[currentVertex], parents); 
+        System.out.print(currentVertex + " "); 
+    } 
+
     public static void printMatrix(int[][] matrix) {
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
@@ -166,58 +231,6 @@ public class Motherland {
         }
     }
 
-    private static void comradeDijkstra(int[][] graph, int source) {
-        int distArr[] = new int[5];  
-   
-        Boolean sptSet[] = new Boolean[5]; 
-  
-        for (int i = 0; i < 5; i++) { 
-            distArr[i] = Integer.MAX_VALUE; 
-            sptSet[i] = false; 
-        } 
-  
-        distArr[source] = 0; 
-  
-        for (int i = 0; i < 4; i++) { 
-
-            int u = minDistance(distArr, sptSet); 
-  
-            sptSet[u] = true; 
-  
-            //v for vertex
-            for (int v = 0; v < 5; v++) 
-  
-                if (!sptSet[v] && graph[u][v]!=0 && 
-                        distArr[u] != Integer.MAX_VALUE && distArr[u]+graph[u][v] < distArr[v]) {
-                    distArr[v] = distArr[u] + graph[u][v]; 
-                }
-        } 
-  
-        printSolution(distArr, 5); 
-    }
-    
-    public static void printSolution(int distArr[], int n) { 
-        System.out.println("Ivan Ivanov as source:");
-        String[] names = {"Ivan Ivanov", "Andre Pochinkov", "Vitas Kushikov", "Ana Petroliokov", "Misha Krivoruchko"};
-        
-        System.out.println("Comrade   Distance"); 
-        for (int i = 0; i < 5; i++) 
-            System.out.println(names[i] +" ---> "+ distArr[i]); 
-    } 
-    
-    public static int minDistance(int distArr[], Boolean set[]) { 
-        // Initialize min value 
-        int min = Integer.MAX_VALUE, minIndex=-1; 
-  
-        for (int i = 0; i < 5; i++) 
-            if (set[i] == false && distArr[i] <= min) 
-{ 
-                min = distArr[i]; 
-                minIndex = i; 
-            } 
-  
-        return minIndex; 
-    }
 
         
 }
