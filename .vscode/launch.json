@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Motherland",
+            "request": "launch",
+            "mainClass": "Motherland",
+            "projectName": "ourspace2_62b27493"
+        }
+    ]
+}

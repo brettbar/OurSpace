@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
-public class Comrade 
-{
+public class Comrade {
     private String name;
     private int age;
     private String occupation;
@@ -9,8 +8,7 @@ public class Comrade
     private int partyLoyalty;
     private ArrayList<Connection> comrades;
 
-    Comrade (String theName, int theAge, String theOccupation, String theCity, int Loyalty)
-    {
+    Comrade (String theName, int theAge, String theOccupation, String theCity, int Loyalty) {
         this.name = theName;
         this.age = theAge;
         this.occupation = theOccupation;
@@ -19,8 +17,7 @@ public class Comrade
         this.comrades = new ArrayList<Connection>();
     }
 
-    Comrade ()
-    {
+    Comrade () {
         this.name = "";
         this.age = 0;
         this.occupation = "";
@@ -29,33 +26,27 @@ public class Comrade
         this.comrades = new ArrayList<Connection>();
     }
     
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
-    public int getAge() 
-    {
+    public int getAge() {
         return this.age;
     }
 
-    public String getOcc() 
-    {
+    public String getOcc() {
         return this.occupation;
     }
 
-    public String getCity() 
-    {
+    public String getCity() {
         return this.city;
     }
 
-    public int getPartyLoyalty() 
-    {
+    public int getPartyLoyalty() {
         return this.partyLoyalty;
     }
 
-    public ArrayList<Connection> getComrades()
-    {
+    public ArrayList<Connection> getComrades() {
         return this.comrades;
     }
 

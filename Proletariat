@@ -1,30 +1,33 @@
 Ivan Ivanov, 21, Farmer, Moscow, 8
 {
-    Andre Pochinkov, 9
-    Sasha Sokolov, 4
-    Vitas Kushikov, 3
+Sasha Sokolov, 4
+Vitas Kushikov, 3
 }
 Andre Pochinkov, 22, Factory Worker, Moscow, 7
 {
-    Ivan Ivanov, 9
-    Sasha Sokolov, 7
+Ivan Ivanov, 9
+Sasha Sokolov, 7
+Vitas Kushikov, 3
 }
 Sasha Sokolov, 18, Student, Leningrad, 3
 {
-    Ivan Ivanov, 4
-    Andre Pochinkov, 7
+Andre Pochinkov, 7
 }
-Vitas Kushikov, 42, Veteran, Stalingrad, 9 
+Vitas Kushikov, 42, Veteran, Stalingrad, 9
 {
-    Ivan Ivanov, 3
-    Vitas Kushikov, 9
+Ivan Ivanov, 3
+Ana Petroliokov, 9
 }
 Ana Petroliokov, 37, Oil Worker, Leningrad, 4
 {
-    Vitas Kushikov, 9
-    Misha Krivoruchko, 6
+Vitas Kushikov, 8
+Misha Krivoruchko, 6
+Ivan Ivanov, 9
+Sasha Sokolov, 7
 }
-Misha Krivoruchko, 21, Baker, Moscow, 9 
+Misha Krivoruchko, 21, Baker, Moscow, 9
 {
-    Ana Petroliokov, 6
+Ana Petroliokov, 6
+Ivan Ivanov, 9
+Sasha Sokolov, 8
 }
