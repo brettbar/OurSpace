@@ -1,3 +1,8 @@
+// Brett Barinaga and Andrew Flagstead
+// CPSC 450 
+// OurSpace
+// Comrade.java
+
 import java.util.ArrayList;
 
 public class Comrade {
@@ -50,5 +55,11 @@ public class Comrade {
         return this.comrades;
     }
 
-
+    public ArrayList<Comrade> getJustComrades() {
+        ArrayList<Comrade> comradeNames = new ArrayList<Comrade>();
+        for (Connection con : comrades) {
+            comradeNames.add(con.getComrade());
+        }
+        return comradeNames;
+    }
 }

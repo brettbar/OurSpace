@@ -1,3 +1,8 @@
+// Brett Barinaga and Andrew Flagstead
+// CPSC 450 
+// OurSpace
+// Motherland.java
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Map;
@@ -33,6 +38,9 @@ public class Motherland {
                 }
                 System.out.println();
             }
+
+            int[][] adjMatrix = builtAdjMatrix();
+            printMatrix(adjMatrix);
             
         }
         catch (Exception e) {
@@ -43,22 +51,20 @@ public class Motherland {
     }
 
     public static void readAndPopulateProles(File file) throws Exception {
+        // go through the proletariat file and ignore friends, just creating 
+        // the comrades with their associated stats, and leaving their connections
+        // as blank
         Scanner filein = new Scanner(file);
-        
-        // ArrayList<Comrade> proletariat = new ArrayList<Comrade>();
         proletariat = new ArrayList<Comrade>();
-
         while (filein.hasNextLine()) {
             String currLine = filein.nextLine();
             Scanner lineScan = new Scanner(currLine);
             lineScan.useDelimiter(", ");
-
             String theName = "";
             String theAge; // will convert to int
             String theOccupation; 
             String theCity; 
-            String theloyalty; // will convert to int
-            
+            String theloyalty; // will convert to int           
             if (currLine.charAt(0) == '{') {
                 while (currLine.charAt(0) != '}') {
                     currLine = filein.nextLine();
@@ -71,62 +77,45 @@ public class Motherland {
                 theOccupation = lineScan.next();
                 theCity = lineScan.next();
                 theloyalty = lineScan.next();
-
                 Comrade comrade = new Comrade(theName, Integer.parseInt(theAge), theOccupation, theCity, Integer.parseInt(theloyalty));
                 proletariat.add(comrade);
             }
             lineScan.close();
         }
-        
         filein.close();
-        // return proletariat;
     }
 
     public static void readAndAddConnections(File file) throws Exception {
-        Scanner filein = new Scanner(file);
-
-        // go through proletariat file
+        // go through proletariat file again,
         // this time care about friends
         // for each friend, look up the associated
         // name of that friend in the proletariat arraylist
         // add THAT comrade object in the proletariat arraylist
         // to the Connection arraylist for the person we are looking at
         // along with the camaraderie value
+        Scanner filein = new Scanner(file);
         String currLine = filein.nextLine();
         while (filein.hasNextLine()) {
             Scanner lineScan = new Scanner(currLine);
             lineScan.useDelimiter(", ");
-
             Comrade theComrade = findComrade(lineScan.next());
             currLine = filein.nextLine();
             lineScan.close();
-            // System.out.println(theComrade.getAge());
-            
             if (currLine.charAt(0) == '{')
                 currLine = filein.nextLine();
                 while (currLine.charAt(0) != '}') {
                     lineScan = new Scanner(currLine);
                     lineScan.useDelimiter(", ");
-                    // System.out.println(currLine);
-      
                     String name = lineScan.next();
-                    // System.out.println(name);
-                    String camaraderie = lineScan.next();
-                    // System.out.println(camaraderie);
-                    
+                    String camaraderie = lineScan.next();                
                     Comrade newComrade = findComrade(name);
-
-                    Connection con = new Connection(newComrade, Integer.parseInt(camaraderie));
-                    
-                    // System.out.println(con.getComrade().getName() + " " + con.getComrade().getCity());
-                    
+                    Connection con = new Connection(newComrade, Integer.parseInt(camaraderie));         
                     theComrade.getComrades().add(con);
                     currLine = filein.nextLine();
                 }
                 if (filein.hasNextLine())
                     currLine = filein.nextLine();
         }
-
         filein.close();
     }
 
@@ -138,4 +127,43 @@ public class Motherland {
         }
         return yourmom; // this shouldnt happen
     }
+
+    public static int[][] builtAdjMatrix() {
+        int size = proletariat.size();
+        int[][] adjMatrix = new int[size][size];
+        for (int i = 0; i < size; i++) { // for each comrade
+            for (int j = 0; j < size; j++) { // for each comrade
+                if (i == j)
+                    adjMatrix[i][j] = 0;
+                else {
+                    Comrade currComrade = proletariat.get(i);
+                    Comrade comradeBeingChecked = proletariat.get(j);
+
+                    // if the comrade being checked (the jth) is
+                    // being followed by the comrade (the ith)
+                    if (currComrade.getJustComrades().contains(comradeBeingChecked)) {
+                        adjMatrix[i][j] = currComrade.getComrades().get(currComrade.getJustComrades().indexOf(comradeBeingChecked)).getCamraderie();
+                    } else {
+                        adjMatrix[i][j] = 0;
+                    }                                     
+                }
+            }
+        }
+        return adjMatrix;
+    }
+
+    // shamelessly stolen from here:
+    // https://stackoverflow.com/questions/5061912/printing-out-a-2-d-array-in-matrix-format/5061920
+    // but its only used for printing in the testing phase, and this isn't really be graded
+    // so it seems fair game to use
+    public static void printMatrix(int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+        
 }

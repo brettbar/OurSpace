@@ -1,3 +1,8 @@
+// Brett Barinaga and Andrew Flagstead
+// CPSC 450 
+// OurSpace
+// Connection.java
+
 public class Connection 
 {
     private Comrade person;
