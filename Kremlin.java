@@ -1,3 +1,9 @@
+// Brett Barinaga and Andrew Flagstead
+// CPSC 450 
+// OurSpace
+// Motherland.java
+// NOTE: USE THIS TO RUN THE PROGRAM, NOT ANY OTHER CLASS
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
@@ -14,6 +20,7 @@ import java.awt.event.*;
 // import javafx.scene.media.Media;
 // import javafx.scene.media.MediaPlayer;
 
+// USE THIS FOR ACTUALLY RUNNING THE PROGRAM
 
 public class Kremlin extends JFrame {
     private final String PASSWORD;
@@ -22,6 +29,7 @@ public class Kremlin extends JFrame {
     private JButton checkStatus;
     private JButton dijkstra;
     private JButton purge;
+    private JButton promotion;
 
     private JPanel logoPanel;
     private JPanel buttons;
@@ -62,8 +70,11 @@ public class Kremlin extends JFrame {
 
     private void doTextField() {
         textPanel = new JPanel();
-        out = new JTextField("Output here");
-        textPanel.add(out);
+        JLabel newLabel = new JLabel();
+        
+        ImageIcon creed = new ImageIcon("blyat.png");
+        newLabel.setIcon(creed);
+        textPanel.add(newLabel);
     }
 
     private void doButtons() {
@@ -71,11 +82,13 @@ public class Kremlin extends JFrame {
         checkStatus = new JButton("           Status             ");
         dijkstra = new JButton(" Comrade Dijkstra  ");
         purge = new JButton("      Stalin Purge       ");
+        promotion = new JButton("   Find Promotion  ");
 
         checkUser.addActionListener(new ButtonListener());
         checkStatus.addActionListener(new ButtonListener());
         dijkstra.addActionListener(new ButtonListener());
         purge.addActionListener(new ButtonListener());
+        promotion.addActionListener(new ButtonListener());
 
         buttons = new JPanel();
         buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
@@ -83,6 +96,7 @@ public class Kremlin extends JFrame {
         buttons.add(checkStatus);
         buttons.add(dijkstra);
         buttons.add(purge);
+        buttons.add(promotion);
         buttons.setBackground(Color.WHITE);
     }
 
@@ -137,18 +151,30 @@ public class Kremlin extends JFrame {
             }
                 //check if user exists
 
-            if (e.getSource() == checkStatus);
+            if (e.getSource() == checkStatus){ 
+                String firstComrade = JOptionPane.showInputDialog("Enter the first Comrade");
+                String secondComrade = JOptionPane.showInputDialog("Enter the second Comrade");
+
+                int stat = rodinu.checkStatus(firstComrade, secondComrade);
+
+                if (stat == -1)
+                    JOptionPane.showMessageDialog(null, "There is no camaraderie between " + firstComrade + " and " + secondComrade);
+                else 
+                    JOptionPane.showMessageDialog(null, "The camaraderie between " + firstComrade + " and " + secondComrade + " is " + stat);
+            }   
                 //check camraderie of two comrades
 
-            if (e.getSource() == dijkstra){ 
+
+            if (e.getSource() == dijkstra) { 
                 String source = JOptionPane.showInputDialog("Enter the starting comrade");
                 String dest = JOptionPane.showInputDialog("Enter the ending comrade");
 
                 rodinu.printMap();
                 rodinu.runDijkstra(source,dest);
+
+                JOptionPane.showMessageDialog(null, "Look in the console for the chain");
             }
                 
-            
             if (e.getSource() == purge) {
                 String password;
                 password = JOptionPane.showInputDialog("Enter the password, comrade commissar");
@@ -156,12 +182,15 @@ public class Kremlin extends JFrame {
                     String input = JOptionPane.showInputDialog("Enter a loyalty to purge with");
                     int loy = Integer.parseInt(input);
                     lazer();
-                    //urBoi();
-                    rodinu.greatPurge(loy);
-                    
+                    rodinu.greatPurge(loy);  
                 }
                 else 
                     JOptionPane.showMessageDialog(null, "Nice try, capitalist swine");
+            }
+
+            if (e.getSource() == promotion) {
+                Comrade bestcomrade = rodinu.lookForPromotion();
+                JOptionPane.showMessageDialog(null, bestcomrade.getName() + " is eligible for a promotion in the party");
             }
 
 

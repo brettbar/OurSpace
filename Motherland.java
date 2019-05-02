@@ -30,6 +30,7 @@ public class Motherland {
             e.printStackTrace();
         }
     }
+    
     // Should not be run this is only for testing purposes. To run the actual program
     // use Kremlin.java as the executable class
     public static void main(String[] args) {
@@ -91,7 +92,10 @@ public class Motherland {
                 System.out.println();
             }
 
-            
+
+            // System.out.println();
+            // Comrade bestComrade = lookForPromotion();
+            // System.out.println(bestComrade.getName());
 
             
         }
@@ -155,6 +159,38 @@ public class Motherland {
         }
     }
     
+    public Comrade lookForPromotion() {
+        int[] scores = new int[proletariat.size()];
+        for (int i = 0; i < scores.length; i++) {
+            scores[i] = 0;
+        }
+
+        for (int i = 0; i < proletariat.size(); i++) {
+            Comrade candidate = proletariat.get(i);
+ 
+            for (int j = 0; j < candidate.getComrades().size(); j++) {
+                Comrade friend = candidate.getComrades().get(j).getComrade();
+                int camradToFriend = candidate.getComrades().get(j).getCamraderie();
+
+                int index = proletariat.indexOf(friend);
+                scores[index] += camradToFriend;
+            }
+        }
+        
+        int maxScore = 0;
+        int index = 0;
+        for (int i = 0; i < scores.length; i++) {
+            if (scores[i] >= maxScore)
+            {
+                maxScore = scores[i];
+                index = i;
+            }   
+        }
+        for (int score : scores) {
+            System.out.print(score + ", ");
+        }
+        return proletariat.get(index);
+    }
 
     public static void readAndPopulateProles(File file) throws Exception {
         // go through the proletariat file and ignore friends, just creating 
@@ -362,5 +398,25 @@ public class Motherland {
         }
     }
 
-        
+    public int checkStatus(String first, String second) { 
+        Comrade firstC, secondC;
+        firstC = new Comrade();
+        secondC = new Comrade();
+
+        for (Comrade prole : proletariat) {
+            if (prole.getName().equals(first)) {
+                firstC = prole;
+            }
+            if (prole.getName().equals(second)) {
+                secondC = prole;
+            }    
+        }
+
+        for (int i = 0; i < firstC.getComrades().size(); i++) {
+            if (firstC.getJustComrades().get(i) == secondC) {
+                return firstC.getComrades().get(i).getCamraderie();
+            }
+        }
+        return -1;
+    }
 }
