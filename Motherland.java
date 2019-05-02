@@ -80,7 +80,7 @@ public class Motherland {
                 System.out.println();
             }
 
-            greatPurge(5);
+            //greatPurge(5);
             System.out.println();
             for (int j = 0; j < proletariat.size(); j++) {
                 Comrade testComrade = proletariat.get(j);
@@ -109,6 +109,7 @@ public class Motherland {
         return false;
     }
 
+    // Menu actions
     public void runDijkstra(String s, String d) {
             int[][] adjMatrix = builtAdjMatrix();
             printMatrix(adjMatrix);
@@ -143,6 +144,17 @@ public class Motherland {
             System.out.println();
         }
     }
+
+    public void greatPurge(int minLoyalty) {
+        for (int i = 0; i < proletariat.size(); i++) {
+            if (proletariat.get(i).getPartyLoyalty() < minLoyalty) {
+                Comrade traitor = proletariat.get(i);
+                eraseTraitorFromFriends(traitor);
+                proletariat.remove(traitor);
+            }
+        }
+    }
+    
 
     public static void readAndPopulateProles(File file) throws Exception {
         // go through the proletariat file and ignore friends, just creating 
@@ -339,16 +351,6 @@ public class Motherland {
         }
     }
 
-    public static void greatPurge(int minLoyalty) {
-        for (int i = 0; i < proletariat.size(); i++) {
-            if (proletariat.get(i).getPartyLoyalty() < minLoyalty) {
-                Comrade traitor = proletariat.get(i);
-                eraseTraitorFromFriends(traitor);
-                proletariat.remove(traitor);
-            }
-        }
-    }
-    
     public static void eraseTraitorFromFriends(Comrade traitor) {
         for (int i = 0; i < proletariat.size(); i++) { // for each prole
             Comrade currentComrade = proletariat.get(i);

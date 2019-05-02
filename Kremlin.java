@@ -157,6 +157,7 @@ public class Kremlin extends JFrame {
                     int loy = Integer.parseInt(input);
                     lazer();
                     //urBoi();
+                    rodinu.greatPurge(loy);
                     
                 }
                 else 
